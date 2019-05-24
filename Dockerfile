@@ -1,12 +1,14 @@
-ARG ORIGIN_COMMIT=b7cbf1f45d4
+ARG ORIGIN_COMMIT=893ece7225aed4dba0ce771d43454bf2ff3d5422
 ARG CONSOLE_COMMIT=master
-ARG OLM_COMMIT=dfcd93b3730f1f
-ARG REGISTRY_COMMIT=2693199a9
-
+ARG OLM_COMMIT=41821c7a460ea13ee421a57f4d8cc4bb1a356a64
+ARG REGISTRY_COMMIT=082aa8f12b57dd0c46cc05383d1cd10f5663de56
 # Console stage
 
 FROM quay.io/coreos/tectonic-console-builder:v16 as console
 ARG CONSOLE_COMMIT
+ENV HTTP_PROXY=http://10.171.251.28:8080
+ENV HTTPS_PROXY=http://10.171.251.28:8080
+ENV NO_PROXY=localhost,127.0.0.1
 RUN mkdir -p /go/src/github.com/openshift/ && cd /go/src/github.com/openshift/ && git clone https://github.com/openshift/console && cd console && git checkout $CONSOLE_COMMIT && ./build.sh 
 RUN mkdir /console
 RUN cp -r /go/src/github.com/openshift/console/frontend/public/dist/ /console/ 
